@@ -37,7 +37,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "http://dmu-election-portal.vercel.app",
+      "https://dmu-election-portal.vercel.app",
     ],
     credentials: true,
   })
