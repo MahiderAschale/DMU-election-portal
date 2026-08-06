@@ -85,8 +85,7 @@ function VoterDashboard() {
   const [, setManifestoTimer] = useState(null);
   const [manifestoSessions, setManifestoSessions] = useState([]);
   const [activeManifesto, setActiveManifesto] = useState(null);
-  const [ , setLoadingManifestoId] = useState(null);
-
+  
   // showVotingPage is triggered automatically after leaving manifesto, OR manually
   const [showVotingPage, setShowVotingPage] = useState(false);
   const [cards, setCards] = useState([]);
