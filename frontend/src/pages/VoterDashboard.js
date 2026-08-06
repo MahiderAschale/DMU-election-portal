@@ -80,13 +80,13 @@ function VoterDashboard() {
 
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [manifestoSessions, setManifestoSessions] = useState([]);
-
-  // Active Jitsi meeting
+    // Active Jitsi meeting
   
   const [, setManifestoTimer] = useState(null);
+  const [manifestoSessions, setManifestoSessions] = useState([]);
+  const [activeManifesto, setActiveManifesto] = useState(null);
+  const [ , setLoadingManifestoId] = useState(null);
 
-  // Voting state
   // showVotingPage is triggered automatically after leaving manifesto, OR manually
   const [showVotingPage, setShowVotingPage] = useState(false);
   const [cards, setCards] = useState([]);
