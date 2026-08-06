@@ -44,7 +44,7 @@ function DeanUploadPage() {
       console.error(err);
       alert("Failed to fetch requests");
     }
-  },[]);
+  },[selectedElection]);
 
   useEffect(() => {
     fetchRequests();

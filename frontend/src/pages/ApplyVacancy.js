@@ -92,7 +92,7 @@ function ApplyVacancy() {
   const fetchVacancy = useCallback(async () => {
     try { const res = await api.get(`/vacancies/${id}`); setVacancy(res.data.data || res.data); }
     catch (err) { console.error(err); }
-  });
+  }, [id]);
 
   useEffect(() => {
     fetchVacancy();
