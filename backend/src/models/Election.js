@@ -47,7 +47,7 @@ module.exports = (sequelize) => {
     }
   }, {
     tableName: 'elections',
-    timestamps: false,
+    timestamps: true,
     underscored: true
   });
 

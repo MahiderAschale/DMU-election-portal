@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "../api/axios";
-import JitsiMeeting from "../components/JitsiMeeting";
 
 const cssStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -85,9 +84,7 @@ function VoterDashboard() {
 
   // Active Jitsi meeting
   const [activeManifesto, setActiveManifesto] = useState(null);
-  const [loadingManifestoId, setLoadingManifestoId] = useState(null);
-  const [manifestoTimer, setManifestoTimer] = useState(null);
-
+  
   // Voting state
   // showVotingPage is triggered automatically after leaving manifesto, OR manually
   const [showVotingPage, setShowVotingPage] = useState(false);
@@ -213,57 +210,7 @@ function VoterDashboard() {
     return acc;
   }, {});
 
-  // ── JOIN MANIFESTO ────────────────────────────────────────────────────────
-  const participateInManifesto = async (session) => {
-    if (!session?.election_id || !session?.meeting_link) return;
-    if (isSessionClosed(session)) {
-      setError("This manifesto session has ended. Please check the voting section below.");
-      return;
-    }
-    setLoadingManifestoId(session.election_id);
-    setError("");
-    setMessage("");
-    try {
-      const res = await axios.post("/manifesto/join", { election_id: session.election_id });
-      const data = res.data?.data || {};
-      setActiveManifesto({
-        ...session,
-        meeting_link: data.meeting_link || session.meeting_link,
-        jitsi_token: data.jitsi_token || null,
-        end_time: data.end_time || session.end_time
-      });
-      setMessage(`You joined the manifesto session for "${session.election?.title}". Stay for 5+ minutes to get valid attendance.`);
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to join manifesto session");
-    } finally {
-      setLoadingManifestoId(null);
-    }
-  };
-
-  // ── LEAVE MANIFESTO ───────────────────────────────────────────────────────
-  const trackManifestoLeave = async (session) => {
-    if (!session?.election_id) return;
-    setLoadingManifestoId(session.election_id);
-    try {
-      const res = await axios.post("/manifesto/leave", { election_id: session.election_id });
-      const duration = res.data?.data?.duration_minutes;
-      const valid = res.data?.data?.is_valid;
-      setMessage(
-        `Left manifesto session${duration !== undefined
-          ? ` (${duration} min — attendance ${valid ? "✅ valid" : "❌ not valid, needed 5+ min"})`
-          : ""}.`
-      );
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to leave manifesto session");
-    } finally {
-      setLoadingManifestoId(null);
-      setActiveManifesto(null);
-      setManifestoTimer(null);
-      // After leaving manifesto → automatically open the voting page
-      await loadVotingPage();
-      setShowVotingPage(true);
-    }
-  };
+  
 
   // ── AUTO END: when manifesto time runs out ────────────────────────────────
   useEffect(() => {

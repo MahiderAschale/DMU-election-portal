@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
-
+import { useState, useEffect, useCallback } from "react";
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap');
   .apply-root { min-height: 100vh; background: #0a0e1a; padding: 48px 24px; font-family: 'DM Sans', sans-serif; color: #f0ece0; }
@@ -89,12 +89,14 @@ function ApplyVacancy() {
 
   useEffect(() => { if (id) setForm(prev => ({ ...prev, vacancy_id: id })); }, [id]);
 
-  const fetchVacancy = async () => {
+  const fetchVacancy = useCallback(async () => {
     try { const res = await api.get(`/vacancies/${id}`); setVacancy(res.data.data || res.data); }
     catch (err) { console.error(err); }
-  };
+  });
 
-  useEffect(() => { if (id) fetchVacancy(); }, [id]);
+  useEffect(() => {
+    fetchVacancy();
+  }, [fetchVacancy]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 

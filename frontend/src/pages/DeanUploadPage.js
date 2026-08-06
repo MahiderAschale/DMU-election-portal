@@ -28,7 +28,7 @@ function DeanUploadPage() {
   const [voters, setVoters] = useState([]);
 
   // Fetch Requests
-  const fetchRequests = async () => {
+  const fetchRequests =useCallback(async () => {
     try {
       const res = await axios.get("/voter/requests");
       const deanRequests = res.data.data.filter(
@@ -44,11 +44,11 @@ function DeanUploadPage() {
       console.error(err);
       alert("Failed to fetch requests");
     }
-  };
+  },[]);
 
   useEffect(() => {
     fetchRequests();
-  }, []);
+ }, [fetchRequests]);
 
   // CSV Parse
   const handleFileUpload = (e) => {

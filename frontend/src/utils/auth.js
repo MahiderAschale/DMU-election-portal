@@ -45,11 +45,12 @@ export const getUserFromToken = () => {
     return null;
   }
 };
-
-export default {
+const auth = {
   setToken,
   getToken,
   removeToken,
   isLoggedIn,
   getUserFromToken,
 };
+
+export default auth;

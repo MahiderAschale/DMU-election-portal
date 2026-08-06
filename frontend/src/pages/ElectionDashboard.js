@@ -151,19 +151,19 @@ function ElectionDashboard() {
     setManifestoAttendances(Object.fromEntries(attendanceEntries));
   };
 
-  const fetchElections = async () => {
+  const fetchElections = useCallback(async () => {
     try {
       const res = await axios.get("/elections");
       const list = res.data.data || [];
       setElections(list);
       if (list.length > 0) await fetchManifestoSessions(list);
     } catch (err) { console.error(err); }
-  };
+  },[]);
 
   useEffect(() => {
     fetchElections();
     axios.get("/positions").then((r) => setPositions(r.data.data || [])).catch(console.error);
-  }, []);
+  },[fetchElections]);
 
   // Poll manifesto sessions every 10 seconds
   useEffect(() => {
@@ -190,7 +190,7 @@ function ElectionDashboard() {
     pollAttendance();
     attendancePollRef.current = setInterval(pollAttendance, 5000);
     return () => clearInterval(attendancePollRef.current);
-  }, [moderatorSession?.election?.id]);
+  },[moderatorSession]);
 
   // ── CREATE ELECTION ───────────────────────────────────────────────────────
 

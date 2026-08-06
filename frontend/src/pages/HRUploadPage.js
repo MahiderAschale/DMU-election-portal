@@ -38,7 +38,7 @@ function HRUploadPage() {
   const [currentUser, setCurrentUser] = useState(null);
   const [isHR, setIsHR] = useState(false);
 
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser =useCallback( async () => {
     try {
       const res = await axios.get("/auth/me");
       const user = res.data.data;
@@ -58,7 +58,7 @@ function HRUploadPage() {
       console.error(err);
       alert("Failed to verify user role. Please log in again.");
     }
-  };
+  },[]);
 
   const fetchRequests = async () => {
     try {
@@ -75,7 +75,7 @@ function HRUploadPage() {
     }
   };
 
-  useEffect(() => { fetchCurrentUser(); }, []);
+  useEffect(() => { fetchCurrentUser(); },  [fetchCurrentUser]);
 
   
   const handleFileUpload = (e) => {
